@@ -1,0 +1,30 @@
+#===============================================================================
+# * phrases.yml
+#===============================================================================
+# Arquivo de configuração das frases aleatórias do God.
+# 
+# As frases aparecem no formato `"frase" ~ autor` no programa, sorteando uma
+# frase e um autor diferentes a cada vez.
+#===============================================================================
+#-------------------------------------------------------------------------------
+# Frases
+#-------------------------------------------------------------------------------
+phrases:
+  - Moe, moe, kyun!
+  - Quando eu morrer, quero virar um pinguim
+  - Pessoal, vamos?
+  - Omae wa mou shindeiru
+  - Nani??
+  - Já se inscreveu no INOVA JOVEM??
+  - "Lorem Ipsum (TODO: botar uma frase)"
+#-------------------------------------------------------------------------------
+# Autores
+#-------------------------------------------------------------------------------
+authors:
+  - Clarice Lispector
+  - Albert Einstein
+  - Miyamoto Musashi
+  - Paulo Vitor
+  - Bonoro
+  - Sakata Gintoki
+  - Tia Pat

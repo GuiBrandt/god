@@ -1,0 +1,28 @@
+#===============================================================================
+# * danger.yml
+#===============================================================================
+# Arquivo de configuração do God para situações em que o programa de
+# monitoramento começa a ser usado.
+#
+# Obs.: Esse arquivo roda SÓ UMA VEZ, quando o programa é aberto pelo professor,
+# Não conte com a execução contínua das instruções desse arquivo
+#===============================================================================
+#-------------------------------------------------------------------------------
+# Lista de processos que serão fechados (.exe é opcional)
+#-------------------------------------------------------------------------------
+kill:
+  - mspaint
+  - chrome
+  - osu!
+  - cs
+  - halflife
+  - Game
+#-------------------------------------------------------------------------------
+# Lista de linhas de comando que serão executadas
+#-------------------------------------------------------------------------------
+cmd:
+  #- start mspaint
+#-------------------------------------------------------------------------------
+# Flashbang: Abre um bloco de notas maximizado, pra esconder a tela
+#-------------------------------------------------------------------------------
+flashbang: false
