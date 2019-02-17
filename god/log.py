@@ -1,6 +1,4 @@
 import time
-import os
-import os.path
 
 
 def error(location, exception):
