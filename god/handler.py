@@ -3,6 +3,7 @@ import yaml
 import win32process
 import win32con
 
+import god
 import god.cli as cli
 import god.log as log
 
@@ -33,10 +34,12 @@ def kill_processes(list):
             process_name += ".exe"
 
         for process in wmi.Win32_Process(Name=process_name):
-            process.Terminate(1)
+            os.kill(process.ProcessId, 666)
 
 
 def danger():
+    god.state = 'alert'
+
     try:
         with open('danger.yml', 'r') as danger_file:
             danger_yml = yaml.load(danger_file)
@@ -59,6 +62,8 @@ def danger():
 
 
 def safe():
+    god.state = 'safe'
+
     try:
         with open('safe.yml', 'r') as safe_file:
             safe_yml = yaml.load(safe_file)

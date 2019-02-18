@@ -2,7 +2,8 @@ import god.checker as checker
 
 from urllib.request import urlopen, URLError
 
-god_thread = None
+thread = None
+state = 'idle'
 
 
 def check_internet():
@@ -14,10 +15,10 @@ def check_internet():
 
 
 def start():
-    global god_thread
-    god_thread = checker.Thread()
-    god_thread.start()
+    global thread
+    thread = checker.Thread()
+    thread.start()
 
 
 def stop():
-    god_thread.kill()
+    thread.kill()

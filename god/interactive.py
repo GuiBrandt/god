@@ -6,7 +6,7 @@ import god.cli as cli
 import god.log as log
 import god.config as config
 
-from termcolor import colored, cprint
+from colorama import Fore, Style
 
 
 def no_arg(cmd_func):
@@ -45,7 +45,7 @@ def cmd_quit():
 
 @no_arg
 def cmd_help():
-    print(colored("""
+    print(Fore.YELLOW + """
     GOD v2.0.0, by PD16
 
     sm|threshold X      : Define o limite de memória para X Kb
@@ -55,7 +55,7 @@ def cmd_help():
     cc|clear            : Limpa a tela
     h|help              : Mostra a ajuda
     q|quit|exit         : Sai do programa
-    """, 'yellow'))
+    """)
 
 
 @no_arg
@@ -91,6 +91,7 @@ def cmd_process(*parts):
     config.set('psname', psname)
     cli.print_settings()
 
+
 _COMMAND_MAP = {
     ('q', 'quit', 'exit'): cmd_quit,
     ('h', 'help'): cmd_help,
@@ -105,7 +106,7 @@ _COMMAND_MAP = {
 def run():
     try:
         while True:
-            line = input(colored("> ", 'cyan')).strip()
+            line = cli.read_command()
             parts = re.split(r"\s+", line)
             command = parts[0].lower()
 

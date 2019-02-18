@@ -1,5 +1,5 @@
 wmi
 pyyaml
 pyfiglet
-termcolor
+colorama
 pypiwin32

@@ -12,10 +12,10 @@ from wmi import WMI
 from enum import Enum, auto
 
 
-class _GodState(Enum):
-    IDLE = auto()
-    SAFE = auto()
-    ALERT = auto()
+class GodState(Enum):
+    IDLE = 'idle'
+    SAFE = 'safe'
+    ALERT = 'alert'
 
 
 class Thread(threading.Thread):
@@ -23,7 +23,7 @@ class Thread(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.die = False
-        self.state = _GodState.IDLE
+        self.state = GodState.IDLE
 
     def check_memory(self):
         processes = self.wmi.Win32_Process(Name=config.get("psname"))
@@ -36,28 +36,20 @@ class Thread(threading.Thread):
             self.safe()
 
     def danger(self):
-        if self.state != _GodState.ALERT:
-            self.state = _GodState.ALERT
+        if self.state != GodState.ALERT:
+            self.state = GodState.ALERT
             handler.danger()
             cli.clear()
-            cli.header('red')
-            cli.print_random_phrase()
-            cli.warning("Run, berg! Run!".center(cli.width()))
-            print()
-            cli.print_settings()
-            print(">", end=' ', flush=True)
+            cli.interactive_header()
+            cli.prompt()
 
     def safe(self):
-        if self.state == _GodState.ALERT:
-            self.state = _GodState.SAFE
+        if self.state == GodState.ALERT:
+            self.state = GodState.SAFE
             handler.safe()
             cli.clear()
-            cli.header()
-            cli.print_random_phrase()
-            cli.success("Back to business...".center(cli.width()))
-            print()
-            cli.print_settings()
-            print(">", end=' ', flush=True)
+            cli.interactive_header()
+            cli.prompt()
 
     def kill(self):
         self.die = True
