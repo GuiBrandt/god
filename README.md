@@ -10,7 +10,7 @@ Monitorador de uso de memória e tudo mais.
 
 ### Jeito recomendado
 
-Faça download da [última release](releases) e instale usando o
+Faça download da última release e instale usando o
 `god-setup.exe`.
 
 ### Jeito "hipster"
