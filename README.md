@@ -4,7 +4,7 @@
 
 # God
 
-Monitorador de uso de memória e o c\*\*\*\*\*o a quatro.
+Monitorador de uso de memória e tudo mais.
 
 ## Instalação
 
@@ -31,7 +31,7 @@ raíz:
 python .
 ```
 
-Rodar isso toda vez é uma bosta, mas já que você é hipster deve conseguir criar
+Rodar isso toda vez é bem chato, mas já que você é hipster deve conseguir criar
 um `.cmd` que faça isso pra você. Boa sorte.
 
 ## Modo de Uso
