@@ -5,6 +5,7 @@
 ; NOTE: The value of AppId uniquely identifies this application.
 ; Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
+SignTool=signtool
 AppId={{23E4C951-84F1-42C4-B67B-25DD3C627C13}
 AppName=God
 AppVersion=2.0-beta
@@ -16,10 +17,10 @@ AppUpdatesURL=http://GuiBrandt.github.io/god
 DefaultDirName={userappdata}/god-2.0
 DefaultGroupName=God
 LicenseFile=.\LICENSE
-OutputBaseFilename=setup
+OutputBaseFilename=god-setup
 Compression=lzma
 SolidCompression=yes
-Password=unicorns
+Password=doradinho
 PrivilegesRequired=lowest
 CreateUninstallRegKey=no
 VersionInfoVersion=1.0.0.0
@@ -37,6 +38,9 @@ UsePreviousAppDir=False
 DisableDirPage=no
 EnableDirDoesntExistWarning=True
 OutputDir=dist
+WizardImageStretch=False
+SetupIconFile=userdocs:god-veyon\god.ico
+AppReadmeFile={app}/README.md
 
 [Languages]
 Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
