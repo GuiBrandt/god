@@ -90,6 +90,3 @@ def check_updates():
 
     os.system("start python apply_update.py")
     sys.exit(0)
-
-
-check_updates()
