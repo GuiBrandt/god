@@ -65,7 +65,7 @@ def check_updates():
         with open(".version", "w") as version_file:
             version_file.write(_VERSION)
 
-        # os.system("start python apply_update.py")
+        os.system("start python apply_update.py")
         sys.exit(0)
 
 
