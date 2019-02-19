@@ -1,5 +1,6 @@
 wmi
 pyyaml
 pyfiglet
+requests
 colorama
 pypiwin32
