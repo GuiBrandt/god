@@ -111,8 +111,6 @@ def _install_update(update_dir):
 
     Isso envolve resolver dependências com pip e mover os arquivos
     baixados para suas respectivas pastas.
-
-    TODO: Implementar remoção de arquivos não utilizados
     """
 
     cli.i_am("Instalando dependências...")
