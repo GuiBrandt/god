@@ -36,10 +36,11 @@ def check_updates():
 
     cli.info("Encontrado: " + latest_release['tag_name'])
 
-    with open(".version", "r") as version_file:
-        if latest_release['tag_name'] == version_file.readline().strip():
-            cli.success("O god está atualizado.")
-            return
+    if os.path.isfile(".version"):
+        with open(".version", "r") as version_file:
+            if latest_release['tag_name'] == version_file.readline().strip():
+                cli.success("O god está atualizado.")
+                return
 
     while True:
         answer = input("\tAtualizar? [Y/n] ").lower().strip()
