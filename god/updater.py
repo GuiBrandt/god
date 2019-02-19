@@ -19,7 +19,6 @@ _REPO = "/repos/GuiBrandt/god"
 
 def fetch_latest_release():
     r = requests.get(_GITHUB_API_URL + _REPO + "/releases/latest")
-    print(r.headers["X-RateLimit-Remaining"])
     return r.json()
 
 
@@ -32,7 +31,13 @@ def fetch_zip(release):
 
 def check_updates():
     cli.i_am("Procurando atualizações...")
-    latest_release = fetch_latest_release()
+
+    try:
+        latest_release = fetch_latest_release()
+    except Exception as e:
+        log.error("fetch-releases", e)
+        cli.error("Falha. Verifique sua conexão com a internet.")
+        return
 
     cli.info("Encontrado: " + latest_release['tag_name'])
 
