@@ -36,6 +36,11 @@ def check_updates():
 
     cli.info("Encontrado: " + latest_release['tag_name'])
 
+    with open(".version", "r") as version_file:
+        if latest_release['tag_name'] == version_file.readline().strip():
+            cli.success("O god está atualizado.")
+            return
+
     while True:
         answer = input("\tAtualizar? [Y/n] ").lower().strip()
         if answer in ['y', '', 'n']:
@@ -87,6 +92,9 @@ def check_updates():
         path = os.path.dirname(f).replace("\\", "/").replace(tmp_dir, '')
         copyfile(f, f".update/{path}/{os.path.basename(f)}")
     cli.success("OK")
+
+    with open(".version", "w") as version_file:
+        version_file.write(latest_release['tag_name'])
 
     os.system("start python apply_update.py")
     sys.exit(0)
