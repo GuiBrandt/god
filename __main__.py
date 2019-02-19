@@ -6,7 +6,7 @@ import god.cli as cli
 import god.log as log
 import god.quotes as quotes
 import god.config as config
-import god.updater as updater
+import god.version as version
 
 
 def load_settings():
@@ -51,7 +51,7 @@ def main():
     cli.clear()
     cli.header()
 
-    updater.check_updates()
+    version.check_updates()
     load_settings()
     load_phrases()
 

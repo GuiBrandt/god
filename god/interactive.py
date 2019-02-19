@@ -2,6 +2,7 @@ import re
 import sys
 
 import god
+import god.version as version
 import god.cli as cli
 import god.log as log
 import god.config as config
@@ -45,8 +46,8 @@ def cmd_quit():
 
 @no_arg
 def cmd_help():
-    print(Fore.YELLOW + """
-    GOD v2.0.0, by PD16
+    print(Fore.YELLOW + f"""
+    GOD {version.current()}, by PD16
 
     sm|threshold X      : Define o limite de memória para X Kb
     sp|process X        : Define o processo monitorado para X
