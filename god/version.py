@@ -2,18 +2,19 @@
 
 Esse módulo gerencia a versão do God e faz o pareamento com a última versão
 disponível no GitHub, e faz a atualização de forma automática.
+
 """
 
-import requests
-import zipfile
-import tempfile
 import io
 import os
-import sys
 import os.path
+import sys
+import zipfile
+import tempfile
 import glob
-
 from shutil import copyfile
+
+import requests
 
 import god.cli as cli
 import god.log as log
@@ -24,8 +25,8 @@ _REPO = "GuiBrandt/god"
 
 # Informação da versão atual
 if os.path.isfile(".version"):
-    with open(".version", "r") as version_file:
-        _VERSION = version_file.readline().strip()
+    with open(".version", "r") as version:
+        _VERSION = {"tag": version.readline().strip()}
 else:
     _VERSION = None
 
@@ -33,7 +34,7 @@ else:
 def current():
     """Obtém a versão atual do God"""
 
-    return _VERSION
+    return _VERSION["tag"] if _VERSION else "2.0.0"
 
 
 def check_updates():
@@ -43,8 +44,8 @@ def check_updates():
 
     try:
         latest_release = _fetch_latest_release()
-    except Exception as e:
-        log.error("fetch-releases", e)
+    except RuntimeError as ex:
+        log.error("fetch-releases", ex)
         cli.error("Falha. Verifique sua conexão com a internet.")
         return
 
@@ -60,10 +61,10 @@ def check_updates():
         update_dir = _download_update(latest_release)
         _install_update(update_dir)
 
-        _VERSION = latest_release['tag_name']
+        _VERSION["tag"] = latest_release['tag_name']
 
         with open(".version", "w") as version_file:
-            version_file.write(_VERSION)
+            version_file.write(_VERSION["tag"])
 
         os.system("start python apply_update.py")
         sys.exit(0)
@@ -72,8 +73,8 @@ def check_updates():
 def _fetch_latest_release():
     """Obtém informações da última release no GitHub em JSON"""
 
-    r = requests.get(f"{_GITHUB_API_URL}/repos/{_REPO}/releases/latest")
-    return r.json()
+    res = requests.get(f"{_GITHUB_API_URL}/repos/{_REPO}/releases/latest")
+    return res.json()
 
 
 def _download_update(release):
@@ -87,12 +88,13 @@ def _download_update(release):
     Retorno
     -------
     O caminho da pasta com os arquivos do `.zip` extraídos
+
     """
 
     cli.i_am("Obtendo arquivo zip...")
     zip_url = release['zipball_url']
-    r = requests.get(zip_url, stream=True)
-    release_zip_file = zipfile.ZipFile(io.BytesIO(r.content))
+    res = requests.get(zip_url, stream=True)
+    release_zip_file = zipfile.ZipFile(io.BytesIO(res.content))
     cli.success("OK")
 
     cli.i_am("Extraindo...")
@@ -111,6 +113,7 @@ def _install_update(update_dir):
 
     Isso envolve resolver dependências com pip e mover os arquivos
     baixados para suas respectivas pastas.
+
     """
 
     cli.i_am("Instalando dependências...")
@@ -152,6 +155,7 @@ def _map_update_sources(update_dir):
     -------
     Lista de tuplas com o nome dos arquivos (sem pasta) e o nome da
     pasta onde devem ser colocados (relativo à pasta raíz do god)
+
     """
 
     files = glob.glob(f"{update_dir}/**/*.py", recursive=True)

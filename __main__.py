@@ -1,3 +1,5 @@
+"""GOD - Monitorador de uso de memória e tudo mais"""
+
 import time
 
 import god
@@ -10,6 +12,8 @@ import god.version as version
 
 
 def load_settings():
+    """Carrega as configurações do programa"""
+
     cli.i_am("Carregando configurações...")
     config.load()
     cli.success("OK")
@@ -17,22 +21,28 @@ def load_settings():
 
 
 def use_inet_phrases():
+    """Tenta usar frases e autores da internet, se falha usa os locais"""
+
     cli.i_am("Pegando umas frases aleatórias...")
     try:
-        n = quotes.load_inet()
-        cli.success("{} frases".format(n))
-    except:
+        amount = quotes.load_inet()
+        cli.success("{} frases".format(amount))
+    except RuntimeError:
         cli.error("Falhou :(")
         use_stored_phrases()
 
 
 def use_stored_phrases():
+    """Carrega frases e autores locais para citações"""
+
     cli.i_am("Usando frases aleatórias locais...")
-    n = quotes.load_local()
-    cli.success("Got {} phrases".format(n))
+    amount = quotes.load_local()
+    cli.success("Got {} phrases".format(amount))
 
 
 def load_phrases():
+    """Carrega informações para citações da fonte mais adequada"""
+
     cli.i_am("Checando conexão com a internet...")
 
     if god.check_internet():
@@ -48,6 +58,8 @@ def load_phrases():
 
 
 def main():
+    """Procedimento principal"""
+
     cli.clear()
     cli.header()
 
@@ -70,5 +82,5 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except Exception as e:
-        log.error("main", e)
+    except RuntimeError as ex:
+        log.error("main", ex)

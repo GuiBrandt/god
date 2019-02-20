@@ -40,7 +40,7 @@ def print_random_phrase():
 
 
 def print_settings():
-    for key in config.DEFAULTS.keys():
+    for key in config.keys():
         value = config.get(key)
         print("\t", key, Fore.CYAN + ':' + Fore.RESET, " \t", value, sep='')
     print(flush=True)
