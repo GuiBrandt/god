@@ -32,15 +32,15 @@ def run():
             parts = re.split(r"\s+", line)
             command = parts[0].lower()
 
-            for alternatives in _COMMAND_MAP.keys():
+            for alternatives in _COMMAND_MAP:
                 if command in alternatives:
                     _COMMAND_MAP[alternatives](*parts[1:])
                     break
             else:
                 cli.error(
                     f"\tComando não reconhecido `{command}`. Veja `help`.")
-    except Exception as e:
-        log.error("interactive", e)
+    except RuntimeError as ex:
+        log.error("interactive", ex)
 
 
 def no_arg(cmd_func):
