@@ -57,7 +57,7 @@ def kill_processes(process_list):
             process_name += ".exe"
 
         for process in wmi.Win32_Process(Name=process_name):
-            os.kill(process.ProcessId, 9)
+            os.system(f"taskkill /f /pid {process.ProcessId}")
 
 
 def danger():

@@ -17,7 +17,7 @@ import god.quotes as quotes
 from god.version import current as version
 
 _LIST_ITEM_MARKER = "~>"
-_INT_LIST = False
+_IN_LIST = False
 
 
 color_init(autoreset=True)
@@ -38,9 +38,9 @@ def newline():
 def header(color=Fore.BLUE):
     """Printa o cabeçalho do God"""
 
-    f = Figlet(font='alligator2', justify='center', width=width())
+    fig = Figlet(font='alligator2', justify='center', width=width())
     newline()
-    print(color + f.renderText('G o d'))
+    print(color + fig.renderText('G o d'))
     newline()
     print(color + version().center(width()))
     print(flush=True)
@@ -67,7 +67,7 @@ def print_settings():
 def i_am(doing):
     """Escreve uma mensagem  de indicador de ação"""
 
-    if _INT_LIST:
+    if _IN_LIST:
         print("\t", Fore.CYAN + _LIST_ITEM_MARKER + Fore.RESET, end=' ')
     print(Fore.YELLOW + doing, end=' ', flush=True)
 
@@ -99,15 +99,15 @@ def info(text):
 def list_begin():
     """Entra no modo de listagem"""
 
-    global _INT_LIST
-    _INT_LIST = True
+    global _IN_LIST
+    _IN_LIST = True
 
 
 def list_end():
     """Termina o modo de listagem"""
 
-    global _INT_LIST
-    _INT_LIST = False
+    global _IN_LIST
+    _IN_LIST = False
     newline()
 
 
@@ -130,11 +130,11 @@ def read_command():
     return input().strip()
 
 
-def yesno(prompt="Confirmar?"):
+def yesno(text="Confirmar?"):
     """Faz uma confirmação de Sim/Não"""
 
     while True:
-        answer = input(f"\t{prompt} [S/n] ").lower().strip()
+        answer = input(f"\t{text} [S/n] ").lower().strip()
         if answer in ['s', '', 'n']:
             break
 
