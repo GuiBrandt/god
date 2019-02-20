@@ -6,6 +6,7 @@
 
 Monitorador de uso de memória e tudo mais.
 
+
 ## Instalação
 
 ### Jeito recomendado
@@ -34,6 +35,7 @@ python .
 Rodar isso toda vez é bem chato, mas já que você é hipster deve conseguir criar
 um `.cmd` que faça isso pra você. Boa sorte.
 
+
 ## Modo de Uso
 
 Uma vez tendo rodado o God com sucesso, você pode ficar meio perdido. O que fazer
@@ -43,3 +45,8 @@ O God, além de monitorar o uso de memória do processo selecionado em _backgrou
 serve como interface de linha de comando para configuração. Para uma lista
 completa dos comandos, digite `help` assim que o modo interativo estiver
 disponível.
+
+
+# Contribuindo
+
+Ver [CONTRIBUTING.md](CONTRIBUTING.md)
