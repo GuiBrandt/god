@@ -1,15 +1,51 @@
+"""Gerenciador do modo interativo do God
+
+Esse módulo é responsável pelo loop de comandos que fica disponível
+enquanto o God monitora a memória em segundo plano
+
+"""
+
 import re
 import sys
 
+from colorama import Fore
+
 import god
+import god.version as version
 import god.cli as cli
 import god.log as log
 import god.config as config
 
-from colorama import Fore, Style
+
+def run():
+    """Executa o loop de comandos interativos
+
+    Nota
+    ----
+    Esse método trava a execução até o usuário lançar um comando `quit`
+
+    """
+
+    try:
+        while True:
+            line = cli.read_command()
+            parts = re.split(r"\s+", line)
+            command = parts[0].lower()
+
+            for alternatives in _COMMAND_MAP.keys():
+                if command in alternatives:
+                    _COMMAND_MAP[alternatives](*parts[1:])
+                    break
+            else:
+                cli.error(
+                    f"\tComando não reconhecido `{command}`. Veja `help`.")
+    except Exception as e:
+        log.error("interactive", e)
 
 
 def no_arg(cmd_func):
+    """Wrapper para comandos sem parâmetro"""
+
     def func_wrapper(*args):
         if len(args) > 1:
             cli.error("\tNão esperava parâmetros, mas OK.")
@@ -18,6 +54,8 @@ def no_arg(cmd_func):
 
 
 def require_arg(cmd_func):
+    """Wrapper para comandos com parâmetro"""
+
     def func_wrapper(*args):
         if len(args) != 1:
             cli.error("\tSintaxe incorreta. Veja `help`.")
@@ -28,6 +66,8 @@ def require_arg(cmd_func):
 
 
 def numeric(cmd_func):
+    """Wrapper para comandos com parâmetro numérico"""
+
     def func_wrapper(*args):
         if not args[0].isnumeric():
             cli.error("\tEsperava um número. Veja `help`.")
@@ -45,8 +85,8 @@ def cmd_quit():
 
 @no_arg
 def cmd_help():
-    print(Fore.YELLOW + """
-    GOD v2.0.0, by PD16
+    print(Fore.YELLOW + f"""
+    GOD {version.current()}
 
     sm|threshold X      : Define o limite de memória para X Kb
     sp|process X        : Define o processo monitorado para X
@@ -101,21 +141,3 @@ _COMMAND_MAP = {
     ('sf', 'frequency'): cmd_frequency,
     ('sp', 'process'): cmd_process
 }
-
-
-def run():
-    try:
-        while True:
-            line = cli.read_command()
-            parts = re.split(r"\s+", line)
-            command = parts[0].lower()
-
-            for alternatives in _COMMAND_MAP.keys():
-                if command in alternatives:
-                    _COMMAND_MAP[alternatives](*parts[1:])
-                    break
-            else:
-                cli.error(
-                    f"\tComando não reconhecido `{command}`. Veja `help`.")
-    except Exception as e:
-        log.error("interactive", e)

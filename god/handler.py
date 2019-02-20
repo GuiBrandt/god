@@ -1,19 +1,33 @@
+"""Gerenciador de estado e ações do God
+
+Esse módulo tem funções para executar as instruções de alerta e
+segurança do God e atualizar o estado do programa
+
+"""
+
 import os
+
 import yaml
-import win32process
 import win32con
+from wmi import WMI
+
+import win32process
 
 import god
 import god.cli as cli
 import god.log as log
 
-from wmi import WMI
-
 
 def flashbang_notepad():
-    si = win32process.STARTUPINFO()
-    si.dwFlags = win32con.STARTF_USESHOWWINDOW
-    si.wShowWindow = win32con.SW_MAXIMIZE
+    """Joga um bloco de notas maximizado na tela
+
+    TODO: Opção de abrir um arquivo nesse bloco de notas
+
+    """
+
+    start_info = win32process.STARTUPINFO()
+    start_info.dwFlags = win32con.STARTF_USESHOWWINDOW
+    start_info.wShowWindow = win32con.SW_MAXIMIZE
     win32process.CreateProcess(
         None,
         "notepad",
@@ -23,21 +37,41 @@ def flashbang_notepad():
         0,
         None,
         None,
-        si
+        start_info
     )
 
 
-def kill_processes(list):
+def kill_processes(process_list):
+    """Mata todos os processos listados por nome
+
+    Parâmetros
+    ----------
+    process_list : list
+        Lista de nomes de processos a serem terminados
+
+    """
+
     wmi = WMI()
-    for process_name in list:
+    for process_name in process_list:
         if not process_name.endswith(".exe"):
             process_name += ".exe"
 
         for process in wmi.Win32_Process(Name=process_name):
-            os.kill(process.ProcessId, 666)
+            os.kill(process.ProcessId, 9)
 
 
 def danger():
+    """Sinaliza uso de memória elevado e toma as ações necessárias
+
+    Nota
+    ----
+    Esse método altera o estado do programa para `alert`
+
+    Em caso de falha ao executar as instruções de alerta, usa-se um
+    bloco de notas "flashbang" como medida provisória.
+
+    """
+
     god.state = 'alert'
 
     try:
@@ -54,14 +88,24 @@ def danger():
                 for pname in danger_yml['cmd']:
                     os.system(pname)
 
-    except Exception as e:
-        log.error("on_danger", e)
+    except RuntimeError as ex:
+        log.error("on_danger", ex)
         cli.error("OH GOD OH FUCK, I CAN'T RUN THE INSTRUCTIONS!!!!1!!1!!!")
         cli.error("Flashbang it is, then.")
         flashbang_notepad()
 
 
 def safe():
+    """Sinaliza uso de memória regular e executa as ações estipuladas
+
+    TODO: Mensagem de aviso (de preferência opcional)
+
+    Nota
+    ----
+    Esse método altera o estado do programa para `safe`
+
+    """
+
     god.state = 'safe'
 
     try:
@@ -72,6 +116,6 @@ def safe():
                 for pname in safe_yml['cmd']:
                     os.system(pname)
 
-    except Exception as e:
-        log.error("on_safe", e)
-        cli.info("Hmmmmm, não tem instruções aqui...")
+    except RuntimeError as ex:
+        log.error("on_safe", ex)
+        cli.info("Hmmmmm, não consigo rodar essas instruções aqui...")

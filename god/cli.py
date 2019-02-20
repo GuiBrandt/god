@@ -1,6 +1,7 @@
 import os
 
 import god
+import god.version as version
 import god.config as config
 import god.quotes as quotes
 
@@ -27,7 +28,7 @@ def header(color=Fore.BLUE):
     newline()
     print(color + f.renderText('G o d'))
     newline()
-    print(color + "v2.0.0".center(width()))
+    print(color + version.current().center(width()))
     print(flush=True)
 
 
@@ -39,7 +40,7 @@ def print_random_phrase():
 
 
 def print_settings():
-    for key in config.DEFAULTS.keys():
+    for key in config.keys():
         value = config.get(key)
         print("\t", key, Fore.CYAN + ':' + Fore.RESET, " \t", value, sep='')
     print(flush=True)
@@ -93,6 +94,16 @@ def prompt():
 def read_command():
     prompt()
     return input().strip()
+
+
+def yesno(prompt="Confirmar?"):
+    while True:
+        answer = input(f"\t{prompt} [S/n] ").lower().strip()
+        if answer in ['s', '', 'n']:
+            break
+
+    newline()
+    return answer.lower().strip() in ['s', '']
 
 
 def interactive_header():
