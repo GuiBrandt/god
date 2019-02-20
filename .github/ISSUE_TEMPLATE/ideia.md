@@ -1,8 +1,8 @@
 ---
-name: Pedido
+name: Ideia
 about: Sugira uma feature para o projeto
-title: "[PEDIDO] "
-labels: enhancement
+title: "[IDEIA] "
+labels: ideia
 assignees: ''
 
 ---
