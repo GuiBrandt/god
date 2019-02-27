@@ -6,6 +6,7 @@ segurança do God e atualizar o estado do programa
 """
 
 import os
+import json
 
 import yaml
 import win32con
@@ -14,6 +15,7 @@ from wmi import WMI
 import win32process
 
 import god
+import god.config as config
 import god.cli as cli
 import god.log as log
 
@@ -25,12 +27,14 @@ def flashbang_notepad():
 
     """
 
+    file = config.get("flashbang_file")
+
     start_info = win32process.STARTUPINFO()
     start_info.dwFlags = win32con.STARTF_USESHOWWINDOW
     start_info.wShowWindow = win32con.SW_MAXIMIZE
     win32process.CreateProcess(
         None,
-        "notepad",
+        f"notepad {file}" if file else "notepad",
         None,
         None,
         False,
