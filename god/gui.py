@@ -1,7 +1,6 @@
 """Gerenciador de interface do usuário
 
-Esse módulo tem funções para gerenciar a interface com o usuário, incluindo CLI
-e GUI.
+Esse módulo tem funções para gerenciar a interface gráfica com o usuário.
 
 """
 
@@ -30,7 +29,8 @@ def confirm(text, title="God"):
 
     res = MessageBox(win32console.GetConsoleWindow(),
                      text, title,
-                     win32con.MB_YESNO | win32con.MB_ICONINFORMATION)
+                     win32con.MB_YESNO | win32con.MB_ICONINFORMATION |
+                     win32con.MB_SYSTEMMODAL)
     return res == win32con.IDYES
 
 
@@ -49,7 +49,8 @@ def info(text, title="God"):
 
     MessageBox(win32console.GetConsoleWindow(),
                text, title,
-               win32con.MB_OK | win32con.MB_ICONINFORMATION)
+               win32con.MB_OK | win32con.MB_ICONINFORMATION |
+               win32con.MB_SYSTEMMODAL)
 
 
 def error(text, title="God"):
@@ -67,7 +68,8 @@ def error(text, title="God"):
 
     MessageBox(win32console.GetConsoleWindow(),
                text, title,
-               win32con.MB_OK | win32con.MB_ICONERROR)
+               win32con.MB_OK | win32con.MB_ICONERROR |
+               win32con.MB_SYSTEMMODAL)
 
 
 def warning(text, title="God"):
@@ -85,4 +87,5 @@ def warning(text, title="God"):
 
     MessageBox(win32console.GetConsoleWindow(),
                text, title,
-               win32con.MB_OK | win32con.MB_ICONWARNING)
+               win32con.MB_OK | win32con.MB_ICONWARNING |
+               win32con.MB_SYSTEMMODAL)

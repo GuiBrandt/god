@@ -6,7 +6,6 @@ segurança do God e atualizar o estado do programa
 """
 
 import os
-import json
 
 import yaml
 import win32con
@@ -17,6 +16,7 @@ import win32process
 import god
 import god.config as config
 import god.cli as cli
+import god.gui as gui
 import god.log as log
 
 
@@ -92,6 +92,9 @@ def danger():
                 for pname in danger_yml['cmd']:
                     os.system(pname)
 
+            if 'popup' in danger_yml and danger_yml['popup']:
+                gui.warning(danger_yml['popup'])
+
     except RuntimeError as ex:
         log.error("on_danger", ex)
         cli.error("OH GOD OH FUCK, I CAN'T RUN THE INSTRUCTIONS!!!!1!!1!!!")
@@ -119,6 +122,9 @@ def safe():
             if 'cmd' in safe_yml and safe_yml['cmd']:
                 for pname in safe_yml['cmd']:
                     os.system(pname)
+
+            if 'popup' in safe_yml and safe_yml['popup']:
+                gui.info(safe_yml['popup'])
 
     except RuntimeError as ex:
         log.error("on_safe", ex)
