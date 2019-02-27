@@ -11,6 +11,8 @@ from colorama import Fore
 from colorama import init as color_init
 from pyfiglet import Figlet
 
+import win32console
+
 import god
 import god.config as config
 import god.quotes as quotes
@@ -21,6 +23,12 @@ _IN_LIST = False
 
 
 color_init(autoreset=True)
+
+
+def title(text):
+    """Define o título da janela"""
+
+    win32console.SetConsoleTitle(text)
 
 
 def width():

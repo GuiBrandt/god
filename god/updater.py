@@ -1,6 +1,6 @@
 """Gerenciador de atualização
 
-Esse módulo faz o pareamento com a última versão disponível no GitHub, 
+Esse módulo faz o pareamento com a última versão disponível no GitHub,
 e faz a atualização de forma automática.
 
 """
@@ -16,6 +16,7 @@ from shutil import copyfile
 import requests
 
 import god.cli as cli
+import god.gui as gui
 import god.log as log
 import god.version as version
 
@@ -32,8 +33,9 @@ def check_updates():
     try:
         latest_release = _fetch_latest_release()
     except RuntimeError as ex:
+        gui.error("Falha na atualização." +
+                  "Verifique sua conexão com a internet.")
         log.error("fetch-releases", ex)
-        cli.error("Falha. Verifique sua conexão com a internet.")
         return
 
     cli.info("Encontrado: " + latest_release['tag_name'])
@@ -44,7 +46,7 @@ def check_updates():
 
     cli.error("O god está desatualizado!")
 
-    if cli.yesno("Atualizar?"):
+    if _confirm(latest_release):
         update_dir = _download_update(latest_release)
         _install_update(update_dir)
 
@@ -55,6 +57,9 @@ def check_updates():
 
         os.system("start python apply_update.py")
         sys.exit(0)
+    else:
+        cli.warning("Ignorando atualização. " +
+                    "Cuidado, isso geralmente dá ruim.")
 
 
 def _fetch_latest_release():
@@ -95,6 +100,21 @@ def _download_update(release):
     return tmp_dir
 
 
+def _confirm(latest_release):
+    """Faz a confirmação de atualização via janela de mensagem"""
+
+    return gui.confirm(
+        f"Versão atual: {version.current()}\r\n" +
+        f"Versão encontrada: {latest_release['tag_name']}\r\n" +
+        "\r\n" +
+        "Changelog\r\n" +
+        "--------------\r\n" +
+        latest_release['body'] + "\r\n" +
+        "\r\n" +
+        "Atualizar?",
+        title="Atualização disponível")
+
+
 def _install_update(update_dir):
     """Faz a instalação de uma atualização
 
@@ -111,7 +131,9 @@ def _install_update(update_dir):
     if result == 0:
         cli.success("OK")
     else:
-        cli.error("Falha na instalação. Abortando atualização...")
+        gui.error("Falha na instalação. Abortando atualização...\r\n" +
+                  "\r\n" +
+                  "Veja o arquivo `error.log' para mais informações.")
         log.error("update", "Falha na instação das dependências")
         return
 

@@ -6,6 +6,7 @@ import god
 import god.interactive
 import god.cli as cli
 import god.log as log
+import god.version as version
 import god.quotes as quotes
 import god.config as config
 import god.updater as updater
@@ -60,6 +61,7 @@ def load_phrases():
 def main():
     """Procedimento principal"""
 
+    cli.title(f"God {version.current()}")
     cli.clear()
     cli.header()
 
